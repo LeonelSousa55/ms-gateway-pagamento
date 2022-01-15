@@ -5,15 +5,20 @@ import { red } from '@mui/material/colors';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#f9cc29',
     },
     secondary: {
-      main: '#19857b',
+      main: '#282b32',
     },
-    error: {
-      main: red.A400,
-    },
+    mode: 'dark'
   },
+  components: {
+    MuiAppBar: {
+      defaultProps: {
+        enableColorOnDark: true,
+      }
+    }
+  }
 });
 
 export default theme;
