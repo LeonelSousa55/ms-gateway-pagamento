@@ -4,52 +4,58 @@ import (
 	"database/sql"
 	"encoding/json"
 	"log"
-	"os"
 
 	"github.com/codeedu/imersao5-gateway/adapter/broker/kafka"
 	"github.com/codeedu/imersao5-gateway/adapter/factory"
 	"github.com/codeedu/imersao5-gateway/adapter/presenter/transaction"
 	"github.com/codeedu/imersao5-gateway/usecase/process_transaction"
+
 	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db, err := sql.Open("mysql", os.Getenv("MYSQL_USERNAME")+":"+os.Getenv("MYSQL_PASSWORD")+"@tcp("+os.Getenv("MYSQL_HOST")+":3306)/"+os.Getenv("MYSQL_DATABASE"))
+
+	//Config. bd
+	db, err := sql.Open("sqlite3", "test.db")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	//Config. repository
 	repositoryFactory := factory.NewRepositoryDatabaseFactory(db)
 	repository := repositoryFactory.CreateTransactionRepository()
+
+	//Config. configMapProducer
 	configMapProducer := &ckafka.ConfigMap{
-		"bootstrap.servers": os.Getenv("BOOTSTRAP_SERVERS"),
-		"security.protocol": os.Getenv("SECURITY_PROTOCOL"),
-		"sasl.mechanisms":   os.Getenv("SASL_MECHANISMS"),
-		"sasl.username":     os.Getenv("SASL_USERNAME"),
-		"sasl.password":     os.Getenv("SASL_PASSWORD"),
+		"bootstrap.servers": "host.docker.internal:9094",
 	}
 	kafkaPresenter := transaction.NewTransactionKafkaPresenter()
-	producer := kafka.NewKafkaProducer(configMapProducer, kafkaPresenter)
 
+	//Config. producer
+	producer := kafka.NewKafkaProducer(configMapProducer, kafkaPresenter)
 	var msgChan = make(chan *ckafka.Message)
+
+	//Config. configMapConsumer
 	configMapConsumer := &ckafka.ConfigMap{
-		"bootstrap.servers": os.Getenv("BOOTSTRAP_SERVERS"),
-		"security.protocol": os.Getenv("SECURITY_PROTOCOL"),
-		"sasl.mechanisms":   os.Getenv("SASL_MECHANISMS"),
-		"sasl.username":     os.Getenv("SASL_USERNAME"),
-		"sasl.password":     os.Getenv("SASL_PASSWORD"),
+		"bootstrap.servers": "host.docker.internal:9094",
 		"client.id":         "goapp",
 		"group.id":          "goapp",
 	}
+
+	//Config. topic
 	topics := []string{"transactions"}
+
+	//Config. consumer
 	consumer := kafka.NewConsumer(configMapConsumer, topics)
 	go consumer.Consume(msgChan)
 
-	usecase := process_transaction.NewProcessTransaction(repository, producer, "transactions_result")
+	//Config. userCase
+	usercase := process_transaction.NewProcessTransaction(repository, producer, "transactions_result")
 
 	for msg := range msgChan {
 		var input process_transaction.TransactionDtoInput
 		json.Unmarshal(msg.Value, &input)
-		usecase.Execute(input)
+		usercase.Execute(input)
 	}
 }
