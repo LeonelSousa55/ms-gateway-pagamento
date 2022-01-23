@@ -1,17 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Account } from './entities/account.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { Op } from 'sequelize';
+import { Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { Account } from './entities/account.entity';
+import { Op } from 'sequelize';
 import { EmptyResultError } from 'sequelize';
 
 @Injectable()
 export class AccountsService {
-  constructor(
-    @InjectModel(Account)
-    private accountModel: typeof Account
-  ) { }
+  constructor(@InjectModel(Account) private accountModel: typeof Account) {}
 
   create(createAccountDto: CreateAccountDto) {
     return this.accountModel.create(createAccountDto);
@@ -21,7 +18,7 @@ export class AccountsService {
     return this.accountModel.findAll();
   }
 
-  findOne(idOrToken: string) {
+  async findOne(idOrToken: string) {
     return this.accountModel.findOne({
       where: {
         [Op.or]: {

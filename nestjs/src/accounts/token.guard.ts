@@ -1,25 +1,25 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AccountStorageService } from './account-storage/account-storage.service';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TokenGuard implements CanActivate {
-  constructor(private accountStorage: AccountStorageService) { }
+  constructor(private accountStorage: AccountStorageService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('Gardiao Token liberadao para o tipo: ' + context.getType());
     if (context.getType() !== 'http') {
-      console.log('Gardiao Token liberadao para o tipo: ' + context.getType());
       return true;
     }
     const request = context.switchToHttp().getRequest();
     const token = request.headers?.['x-token'] as string;
-    try {
-      if (token) {
+    if (token) {
+      try {
         await this.accountStorage.setBy(token);
         return true;
+      } catch (e) {
+        console.error(e);
+        return false;
       }
-    } catch (error) {
-      console.error(error);
-      return false;
     }
 
     return false;

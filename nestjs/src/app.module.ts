@@ -1,14 +1,15 @@
+import { Account } from './accounts/entities/account.entity';
+import { Order } from './orders/entities/order.entity';
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Order } from './orders/entities/order.entity';
 import { OrdersModule } from './orders/orders.module';
 import { AccountsModule } from './accounts/accounts.module';
-import { Account } from './accounts/entities/account.entity';
 import { ConfigModule } from '@nestjs/config';
 
+//ES7 Decorators - Documentar ou estender
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -26,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
         //force: true
       },
     }),
+    OrdersModule,
     // SequelizeModule.forRoot({
     //   dialect: 'sqlite',
     //   host: join(__dirname, 'database.sqlite'),
@@ -33,13 +35,12 @@ import { ConfigModule } from '@nestjs/config';
     //   models: [Order, Account],
     //   sync: {
     //     alter: true,
-    //     force: true,
-    //   }
+    //     //force: true
+    //   },
     // }),
-    OrdersModule,
     AccountsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

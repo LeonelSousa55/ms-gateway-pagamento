@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: wesleywillians/imersao5-backend
+        image: leoneldesousa/imersao5-backend
         envFrom:
         - secretRef:
             name: backend

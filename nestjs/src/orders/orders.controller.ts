@@ -1,16 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards } from '@nestjs/common';
+import { OrderStatus } from './entities/order.entity';
+import { TokenGuard } from './../accounts/token.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { TokenGuard } from 'src/accounts/token.guard';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload, Transport } from '@nestjs/microservices';
 import { KafkaMessage } from '@nestjs/microservices/external/kafka.interface';
-import { OrderStatus } from './entities/order.entity';
 
 @UseGuards(TokenGuard)
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) { }
+  constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
@@ -39,10 +49,10 @@ export class OrdersController {
   }
 
   @MessagePattern('transactions_result')
-  async consumerUpdateStatus(@Payload() massage: KafkaMessage) {
-    const data = massage.value as any;
+  async consumerUpdateStatus(@Payload() message: KafkaMessage) {
+    const data = message.value as any;
     console.log('Resultado processamento kafka: ' + JSON.stringify(data));
-    const { id, status } = data as { id: string, status: OrderStatus };
-    await this.ordersService.update(id, { status })
+    const { id, status } = data as { id: string; status: OrderStatus };
+    await this.ordersService.update(id, { status });
   }
 }
