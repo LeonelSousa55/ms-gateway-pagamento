@@ -1,12 +1,12 @@
-GET http://localhost:3000/orders
-x-token: wm9jhrn14l
+GET http://35.226.51.18/orders
+x-token: wgaa981uwjg
 
 ###
-GET http://localhost:3000/orders/da8f9397-a2d4-43ca-90f5-382829caf5b7
-x-token: wm9jhrn14l
+GET http://35.226.51.18/orders/da8f9397-a2d4-43ca-90f5-382829caf5b7
+x-token: wgaa981uwjg
 
 ###
-POST http://localhost:3000/orders
+POST http://35.226.51.18/orders
 Content-Type: application/json
 x-token: wm9jhrn14l
 
@@ -18,12 +18,12 @@ x-token: wm9jhrn14l
 }
 
 ###
-POST http://localhost:3000/orders
+POST http://35.226.51.18/orders
 Content-Type: application/json
-x-token: wm9jhrn14l
+x-token: wgaa981uwjg
 
 {    
-    "id": "da8f9397-a2d4-43ca-90f5-382829caf5b7",
+    "id": "da8f9397-a2d4-43ca-90f5-382829caf5bu",
     "credit_card_number": "5102497878839657",
     "credit_card_name": "Leonel de Sousa",
     "credit_card_expiration_month": 10,
@@ -33,7 +33,7 @@ x-token: wm9jhrn14l
 }
 
 ###
-PATCH http://localhost:3000/orders/8d8bd4e7-6d4c-4714-baa5-36210d47bb53
+PATCH http://35.226.51.18/orders/8d8bd4e7-6d4c-4714-baa5-36210d47bb53
 Content-Type: application/json
 x-token: wm9jhrn14l
 
@@ -43,5 +43,5 @@ x-token: wm9jhrn14l
 }
 
 ###
-DELETE http://localhost:3000/orders/99c03233-71b7-4fd6-bdf5-c72639b18ff4
+DELETE http://35.226.51.18/orders/99c03233-71b7-4fd6-bdf5-c72639b18ff4
 x-token: wm9jhrn14l

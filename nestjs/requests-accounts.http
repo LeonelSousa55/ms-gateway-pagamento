@@ -1,10 +1,10 @@
-GET http://localhost:3000/accounts
+GET http://35.226.51.18/accounts
 
 ###
-GET http://localhost:3000/accounts/6da0fc7c-4c20-42f4-b9aa-3ad4aa0b043e
+GET http://35.226.51.18/accounts/6da0fc7c-4c20-42f4-b9aa-3ad4aa0b043e
 
 ###
-POST http://localhost:3000/accounts
+POST http://35.226.51.18/accounts
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/accounts/6da0fc7c-4c20-42f4-b9aa-3ad4aa0b043e
+PATCH http://35.226.51.18/accounts/6da0fc7c-4c20-42f4-b9aa-3ad4aa0b043e
 Content-Type: application/json
 
 {

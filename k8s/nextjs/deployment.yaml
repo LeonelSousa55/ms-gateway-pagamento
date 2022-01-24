@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: wesleywillians/imersao5-frontend:latest
+        image: leoneldesousa/imersao5-frontend:latest
         ports:
         - containerPort: 3000
     

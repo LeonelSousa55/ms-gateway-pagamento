@@ -1,14 +1,12 @@
-import Head from 'next/head';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import { AppProps } from 'next/app';
-import theme from '../utils/thema';
-import createEmotionCache from '../utils/createEmotionCache';
-import { Navbar } from '../components/Navbar';
-import { Container } from '@mui/material';
-
-
+import Head from "next/head";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import { AppProps } from "next/app";
+import theme from "../utils/theme";
+import createEmotionCache from "../utils/createEmotionCache";
+import { Navbar } from "../components/Navbar";
+import { Container } from "@mui/material";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -27,8 +25,8 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Navbar />
-        <Container style={{ paddingTop: theme.spacing(2) }}>
+        <Navbar /> 
+        <Container style={{paddingTop: theme.spacing(2)}}>
           <Component {...pageProps} />
         </Container>
       </ThemeProvider>
